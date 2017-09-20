@@ -17,7 +17,7 @@ fi
 # Update & upgrade & base utils install:
 apt-get update && apt upgrade -y 
 apt-get install software-properties-common -y
-apt-add-repository ppa:ansible/ansible
+apt-add-repository ppa:ansible/ansible -y
 apt-get update 
 apt-get install wget curl git htop atop build-essential tree vim ansible -y
 apt-get autoremove -y && apt-get autoclean && apt-get clean
