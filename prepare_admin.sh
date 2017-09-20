@@ -2,8 +2,7 @@
 
 #Update && Upgrade;
 #Base utils install;
-#AWSCLI install
-#Google Cloud CLI install
+#Ansible install;
 #IPV6 disable;
 
 DIR='/admin'
@@ -17,7 +16,10 @@ fi
 
 # Update & upgrade & base utils install:
 apt-get update && apt upgrade -y 
-apt-get install wget curl git htop atop build-essential tree vim -y
+apt-get install software-properties-common -y
+apt-add-repository ppa:ansible/ansible
+apt-get update 
+apt-get install wget curl git htop atop build-essential tree vim ansible -y
 apt-get autoremove -y && apt-get autoclean && apt-get clean
  
 # Default dir:
@@ -28,6 +30,10 @@ echo "cd $DIR" >> ~/.bashrc
 
 # Install add tools
 git clone https://github.com/fdg11/admin-tools.git $DIR
+git config --global user.email alexfile123@gmail.com
+git config --global user.name "Alex P"
+git config --global push.default simple
+
 cd /$DIR
 
 # Permit root login by the key:
