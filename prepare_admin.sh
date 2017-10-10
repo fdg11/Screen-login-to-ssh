@@ -16,12 +16,21 @@ fi
 
 # Update & upgrade & base utils install:
 apt-get update && apt upgrade -y 
-apt-get install software-properties-common -y
+apt-get install software-properties-common apt-transport-https -y
 apt-add-repository ppa:ansible/ansible -y
 apt-get update 
 apt-get install wget curl git htop atop build-essential tree vim ansible -y
+
+# install docker-ce, docker-compose
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-get install docker-ce -y 
 apt-get autoremove -y && apt-get autoclean && apt-get clean
- 
+curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \
+	-o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose 
+
 # Default dir:
 if [ ! -d "$DIR" ]; then
 	mkdir $DIR
@@ -45,8 +54,8 @@ sed -i '/#AuthorizedKeysFile/s/#//' /etc/ssh/sshd_config
 sed -i '/#PasswordAuthentication/s/#//;/PasswordAuthentication/s/yes/no/' /etc/ssh/sshd_config
 service ssh restart
 
-# IPv6 disable:
-sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="ipv6.disable=1"/g' /etc/default/grub
+# IPv6 disable and enable swap limit support:
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="ipv6.disable=1 cgroup_enable=memory swapaccount=1"/g' /etc/default/grub
 update-grub
 
 # Show ips:
